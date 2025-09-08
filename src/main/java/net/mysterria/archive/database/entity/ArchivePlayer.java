@@ -9,11 +9,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-public class ArchiveType {
+public class ArchivePlayer {
 
     @Id
-    private Long id;
+    private String playerUUID;
 
-    @Column(name = "type")
-    private String type;
+    @Column(name = "player_name")
+    private String playerName;
 }
