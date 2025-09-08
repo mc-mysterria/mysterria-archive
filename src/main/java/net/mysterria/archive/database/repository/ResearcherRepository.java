@@ -8,6 +8,9 @@ import java.util.Optional;
 
 @Repository
 public interface ResearcherRepository extends JpaRepository<ArchiveResearcher, Long> {
+
     Optional<ArchiveResearcher> findByNickname(String nickname);
+
     boolean existsByNickname(String nickname);
+
 }

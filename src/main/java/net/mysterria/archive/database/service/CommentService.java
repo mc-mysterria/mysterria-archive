@@ -61,7 +61,7 @@ public class CommentService {
         ArchiveItem archiveItem = itemRepository.findById(itemId)
                 .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + itemId));
         
-        return commentRepository.findByItemOrderByCreatedAtAsc(archiveItem).stream()
+        return commentRepository.findByArchiveItemOrderByCreatedAtAsc(archiveItem).stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
@@ -70,7 +70,7 @@ public class CommentService {
         ArchiveResearcher archiveResearcher = researcherRepository.findById(researcherId)
                 .orElseThrow(() -> new ResourceNotFoundException("Researcher not found with id: " + researcherId));
         
-        return commentRepository.findByResearcher(archiveResearcher).stream()
+        return commentRepository.findByArchiveResearcher(archiveResearcher).stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }

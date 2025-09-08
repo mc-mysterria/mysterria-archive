@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface CommentRepository extends JpaRepository<ArchiveComment, Long> {
     
-    List<ArchiveComment> findByItemOrderByCreatedAtAsc(ArchiveItem archiveItem);
+    List<ArchiveComment> findByArchiveItemOrderByCreatedAtAsc(ArchiveItem archiveItem);
     
-    List<ArchiveComment> findByResearcher(ArchiveResearcher archiveResearcher);
+    List<ArchiveComment> findByArchiveResearcher(ArchiveResearcher archiveResearcher);
     
-    List<ArchiveComment> findByItemAndResearcher(ArchiveItem archiveItem, ArchiveResearcher archiveResearcher);
+    List<ArchiveComment> findByArchiveItemAndArchiveResearcher(ArchiveItem archiveItem, ArchiveResearcher archiveResearcher);
 }

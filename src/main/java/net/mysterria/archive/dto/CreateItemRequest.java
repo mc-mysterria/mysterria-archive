@@ -1,8 +1,6 @@
 package net.mysterria.archive.dto;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -19,4 +17,16 @@ public class CreateItemRequest {
     
     @NotNull(message = "Researcher ID cannot be null")
     private Long researcherId;
+    
+    private Long pathwayId;
+    
+    private Long typeId;
+    
+    @Min(value = 0, message = "Sequence number cannot be negative")
+    @Max(value = 9, message = "Sequence number cannot exceed 9")
+    private Integer sequenceNumber;
+    
+    @Pattern(regexp = "^(COMMON|UNCOMMON|RARE|EPIC|LEGENDARY|MYTHICAL)?$", 
+             message = "Rarity must be one of: COMMON, UNCOMMON, RARE, EPIC, LEGENDARY, MYTHICAL")
+    private String rarity;
 }

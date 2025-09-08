@@ -23,10 +23,10 @@ public class ArchiveResearcher {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
     
-    @OneToMany(mappedBy = "researcher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "archiveResearcher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArchiveItem> discoveredArchiveItems;
     
-    @OneToMany(mappedBy = "researcher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "archiveResearcher", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<ArchiveComment> archiveComments;
     
     @PrePersist

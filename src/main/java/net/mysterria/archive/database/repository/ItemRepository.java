@@ -17,8 +17,8 @@ public interface ItemRepository extends JpaRepository<ArchiveItem, Long> {
     List<ArchiveItem> findByDescriptionContainingIgnoreCase(String description);
     
     List<ArchiveItem> findByPurposeContainingIgnoreCase(String purpose);
-    
-    List<ArchiveItem> findByResearcher(ArchiveResearcher archiveResearcher);
+
+    List<ArchiveItem> findByArchiveResearcher(ArchiveResearcher archiveResearcher);
     
     @Query("SELECT i FROM ArchiveItem i WHERE " +
            "LOWER(i.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +

@@ -2,7 +2,7 @@ package net.mysterria.archive;
 
 import net.mysterria.archive.database.repository.ItemRepository;
 import net.mysterria.archive.database.repository.PathwayRepository;
-import net.mysterria.archive.database.repository.PlayerRepository;
+import net.mysterria.archive.database.repository.ResearcherRepository;
 import net.mysterria.archive.database.repository.TypeRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -28,13 +28,20 @@ public class MysterriaArchiveApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
         System.out.println("Hello from Mysterria Archive!");
 
-
         ItemRepository itemRepository = applicationContext.getBean(ItemRepository.class);
 
-        PlayerRepository playerRepository = applicationContext.getBean(PlayerRepository.class);
+        System.out.println("Starting with " + itemRepository.count() + " items");
+
+        ResearcherRepository researcherRepository = applicationContext.getBean(ResearcherRepository.class);
+
+        System.out.println("Starting with " + researcherRepository.count() + " researchers");
 
         TypeRepository typeRepository = applicationContext.getBean(TypeRepository.class);
 
+        System.out.println("Starting with " + typeRepository.count() + " types");
+
         PathwayRepository pathwayRepository = applicationContext.getBean(PathwayRepository.class);
+
+        System.out.println("Starting with " + pathwayRepository.count() + " pathways");
     }
 }

@@ -14,5 +14,9 @@ public class ItemDto {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private ResearcherDto researcher;
+    private PathwayDto pathway;
+    private TypeDto type;
+    private Integer sequenceNumber;
+    private String rarity;
     private List<CommentDto> comments;
 }

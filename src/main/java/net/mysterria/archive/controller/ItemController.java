@@ -52,6 +52,30 @@ public class ItemController {
         return ResponseEntity.ok(items);
     }
     
+    @GetMapping("/pathway/{pathwayId}")
+    public ResponseEntity<List<ItemDto>> getItemsByPathway(@PathVariable Long pathwayId) {
+        List<ItemDto> items = itemService.findByPathwayId(pathwayId);
+        return ResponseEntity.ok(items);
+    }
+    
+    @GetMapping("/type/{typeId}")
+    public ResponseEntity<List<ItemDto>> getItemsByType(@PathVariable Long typeId) {
+        List<ItemDto> items = itemService.findByTypeId(typeId);
+        return ResponseEntity.ok(items);
+    }
+    
+    @GetMapping("/sequence/{sequenceNumber}")
+    public ResponseEntity<List<ItemDto>> getItemsBySequence(@PathVariable Integer sequenceNumber) {
+        List<ItemDto> items = itemService.findBySequenceNumber(sequenceNumber);
+        return ResponseEntity.ok(items);
+    }
+    
+    @GetMapping("/rarity/{rarity}")
+    public ResponseEntity<List<ItemDto>> getItemsByRarity(@PathVariable String rarity) {
+        List<ItemDto> items = itemService.findByRarity(rarity);
+        return ResponseEntity.ok(items);
+    }
+    
     @PutMapping("/{id}")
     public ResponseEntity<ItemDto> updateItem(@PathVariable Long id, @Valid @RequestBody UpdateItemRequest request) {
         ItemDto item = itemService.updateItem(id, request);
