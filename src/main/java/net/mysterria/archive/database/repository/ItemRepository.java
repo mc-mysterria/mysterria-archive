@@ -1,27 +1,28 @@
 package net.mysterria.archive.database.repository;
 
 import net.mysterria.archive.database.entity.ArchiveItem;
-import net.mysterria.archive.database.entity.ArchivePathway;
-import net.mysterria.archive.database.entity.ArchivePlayer;
-import net.mysterria.archive.database.entity.ArchiveType;
+import net.mysterria.archive.database.entity.ArchiveResearcher;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface ItemRepository extends JpaRepository<ArchiveItem, Long> {
-
-    @Override
-    List<ArchiveItem> findAll();
-
-    List<ArchiveItem> findByItemName(String itemName);
-
-    List<ArchiveItem> findByItemLore(String itemLore);
-
-    List<ArchiveItem> findByPlayerFound(ArchivePlayer playerFound);
-
-    List<ArchiveItem> findByItemType(ArchiveType itemType);
-
-    List<ArchiveItem> findByItemPath(ArchivePathway itemPath);
+    
+    List<ArchiveItem> findByNameContainingIgnoreCase(String name);
+    
+    List<ArchiveItem> findByDescriptionContainingIgnoreCase(String description);
+    
+    List<ArchiveItem> findByPurposeContainingIgnoreCase(String purpose);
+    
+    List<ArchiveItem> findByResearcher(ArchiveResearcher archiveResearcher);
+    
+    @Query("SELECT i FROM ArchiveItem i WHERE " +
+           "LOWER(i.name) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+           "LOWER(i.description) LIKE LOWER(CONCAT('%', :searchTerm, '%')) OR " +
+           "LOWER(i.purpose) LIKE LOWER(CONCAT('%', :searchTerm, '%'))")
+    List<ArchiveItem> searchItems(@Param("searchTerm") String searchTerm);
 }

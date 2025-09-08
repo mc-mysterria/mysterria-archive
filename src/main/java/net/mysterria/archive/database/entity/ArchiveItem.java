@@ -4,33 +4,49 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
+@Table(name = "items")
 public class ArchiveItem {
-
+    
     @Id
-    @GeneratedValue(generator = "system-uuid")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "item_name")
-    private String itemName;
-
-    @Column(name = "item_lore")
-    private String itemLore;
-
-    @Column(name = "item_thumbnail")
-    private String itemThumbnail;
-
-    @ManyToOne
-    @JoinColumn(name = "player_found")
-    private ArchivePlayer playerFound;
-
-    @ManyToOne
-    @JoinColumn(name = "item_type")
-    private ArchiveType itemType;
-
-    @ManyToOne
-    @JoinColumn(name = "item_path")
-    private ArchivePathway itemPath;
+    
+    @Column(nullable = false)
+    private String name;
+    
+    @Column(columnDefinition = "TEXT")
+    private String description;
+    
+    @Column(columnDefinition = "TEXT")
+    private String purpose;
+    
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+    
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+    
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "researcher_id", nullable = false)
+    private ArchiveResearcher archiveResearcher;
+    
+    @OneToMany(mappedBy = "item", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ArchiveComment> archiveComments;
+    
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
+    }
+    
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
+    }
 }
