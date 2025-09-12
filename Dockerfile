@@ -19,14 +19,17 @@ COPY src src
 # Build the application
 RUN ./gradlew build -x test
 
+# List the built files for debugging
+RUN ls -la /app/build/libs/
+
 # Use Eclipse Temurin JRE 21 for runtime
 FROM eclipse-temurin:21-jre
 
 # Set working directory
 WORKDIR /app
 
-# Copy the built JAR from builder stage
-COPY --from=builder /app/build/libs/*.jar app.jar
+# Copy the built JAR from builder stage - use a more specific pattern
+COPY --from=builder /app/build/libs/MysterriaArchive-*.jar app.jar
 
 # Expose port 8080
 EXPOSE 8080
