@@ -28,8 +28,8 @@ FROM eclipse-temurin:21-jre
 # Set working directory
 WORKDIR /app
 
-# Copy the built JAR from builder stage - use a more specific pattern
-COPY --from=builder /app/build/libs/MysterriaArchive-*.jar app.jar
+# Copy the built JAR file from builder stage
+COPY --from=builder /app/build/libs/MysterriaArchive-*-SNAPSHOT.jar app.jar
 
 # Expose port 8080
 EXPOSE 8080
