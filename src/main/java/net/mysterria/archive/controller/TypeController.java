@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/types")
+@RequestMapping("/archive/types")
 public class TypeController {
     
     private final TypeService typeService;
