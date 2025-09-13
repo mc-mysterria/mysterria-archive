@@ -12,7 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "pathways")
 public class ArchivePathway {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

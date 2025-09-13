@@ -17,46 +17,46 @@ import java.util.stream.Collectors;
 
 @Service
 public class ResearcherService {
-    
+
     private final ResearcherRepository researcherRepository;
-    
+
     @Autowired
     public ResearcherService(ResearcherRepository researcherRepository) {
         this.researcherRepository = researcherRepository;
     }
-    
+
     public ResearcherDto createResearcher(CreateResearcherRequest request) {
         validateNickname(request.getNickname());
-        
+
         if (researcherRepository.existsByNickname(request.getNickname())) {
             throw new DuplicateResourceException("Researcher with nickname '" + request.getNickname() + "' already exists");
         }
-        
+
         ArchiveResearcher archiveResearcher = new ArchiveResearcher();
         archiveResearcher.setNickname(request.getNickname());
-        
+
         ArchiveResearcher savedArchiveResearcher = researcherRepository.save(archiveResearcher);
         return mapToDto(savedArchiveResearcher);
     }
-    
+
     public ResearcherDto findById(Long id) {
         ArchiveResearcher archiveResearcher = researcherRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Researcher not found with id: " + id));
         return mapToDto(archiveResearcher);
     }
-    
+
     public ResearcherDto findByNickname(String nickname) {
         ArchiveResearcher archiveResearcher = researcherRepository.findByNickname(nickname)
                 .orElseThrow(() -> new ResourceNotFoundException("Researcher not found with nickname: " + nickname));
         return mapToDto(archiveResearcher);
     }
-    
+
     public List<ResearcherDto> findAll() {
         return researcherRepository.findAll().stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
-    
+
     public void deleteById(Long id) {
         if (!researcherRepository.existsById(id)) {
             throw new ResourceNotFoundException("Researcher not found with id: " + id);
@@ -71,14 +71,13 @@ public class ResearcherService {
             return existing.get();
         }
 
-        // Create new researcher linked to backend user
         ArchiveResearcher newResearcher = new ArchiveResearcher();
         newResearcher.setBackendUserId(backendUserId);
         newResearcher.setNickname(nickname);
 
         return researcherRepository.save(newResearcher);
     }
-    
+
     private void validateNickname(String nickname) {
         if (nickname == null || nickname.trim().isEmpty()) {
             throw new ValidationException("Nickname cannot be null or empty");
@@ -87,7 +86,7 @@ public class ResearcherService {
             throw new ValidationException("Nickname must be between 2 and 50 characters");
         }
     }
-    
+
     private ResearcherDto mapToDto(ArchiveResearcher archiveResearcher) {
         ResearcherDto dto = new ResearcherDto();
         dto.setId(archiveResearcher.getId());
