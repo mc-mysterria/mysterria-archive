@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="'Developer: ' + ${developer.nickname}">Developer</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Developer Profile</h1>
+
+    <div class="profile">
+        <h2 th:text="${developer.nickname}">nickname</h2>
+        <h3 th:text="${developer.fullName}">Full Name</h3>
+
+        <p th:if="${developer.github != null and #strings.startsWith(developer.github, 'http')}">
+            <strong>GitHub:</strong>
+            <a th:href="${developer.github}" th:text="${developer.github}" class="github" target="_blank" rel="noopener noreferrer"></a>
+        </p>
+
+        <p th:unless="${developer.github != null and #strings.startsWith(developer.github, 'http')}">
+            <strong>GitHub:</strong> <span>Not provided</span>
+        </p>
+
+        <p><strong>Role:</strong> <span th:text="${developer.role}">Project Developer</span></p>
+        <p><a th:href="@{/archive/mvc}">Back to list</a></p>
+    </div>
+</div>
+</body>
+</html>
