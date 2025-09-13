@@ -13,7 +13,6 @@ public class CreateCommentRequest {
     
     @NotNull(message = "Item ID cannot be null")
     private Long itemId;
-    
-    @NotNull(message = "Researcher ID cannot be null")
-    private Long researcherId;
+
+    // Note: researcherId removed - determined by authenticated user
 }

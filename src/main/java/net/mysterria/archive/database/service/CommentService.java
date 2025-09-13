@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,30 +24,36 @@ public class CommentService {
     private final CommentRepository commentRepository;
     private final ItemRepository itemRepository;
     private final ResearcherRepository researcherRepository;
-    
+    private final ResearcherService researcherService;
+
     @Autowired
-    public CommentService(CommentRepository commentRepository, 
+    public CommentService(CommentRepository commentRepository,
                          ItemRepository itemRepository,
-                         ResearcherRepository researcherRepository) {
+                         ResearcherRepository researcherRepository,
+                         ResearcherService researcherService) {
         this.commentRepository = commentRepository;
         this.itemRepository = itemRepository;
         this.researcherRepository = researcherRepository;
+        this.researcherService = researcherService;
     }
     
-    public CommentDto createComment(CreateCommentRequest request) {
+    public CommentDto createComment(CreateCommentRequest request, UUID backendUserId) {
         validateCommentRequest(request);
-        
+
         ArchiveItem archiveItem = itemRepository.findById(request.getItemId())
                 .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + request.getItemId()));
-        
-        ArchiveResearcher archiveResearcher = researcherRepository.findById(request.getResearcherId())
-                .orElseThrow(() -> new ResourceNotFoundException("Researcher not found with id: " + request.getResearcherId()));
-        
+
+        // Find or create researcher linked to backend user
+        ArchiveResearcher archiveResearcher = researcherService.findOrCreateByBackendUserId(
+            backendUserId,
+            "User_" + backendUserId.toString().substring(0, 8) // Default nickname
+        );
+
         ArchiveComment archiveComment = new ArchiveComment();
         archiveComment.setContent(request.getContent());
         archiveComment.setArchiveItem(archiveItem);
         archiveComment.setArchiveResearcher(archiveResearcher);
-        
+
         ArchiveComment savedArchiveComment = commentRepository.save(archiveComment);
         return mapToDto(savedArchiveComment);
     }
@@ -92,9 +99,7 @@ public class CommentService {
         if (request.getItemId() == null) {
             throw new ValidationException("Item ID cannot be null");
         }
-        if (request.getResearcherId() == null) {
-            throw new ValidationException("Researcher ID cannot be null");
-        }
+        // Note: researcherId is no longer required as it's determined by the authenticated user
     }
     
     private CommentDto mapToDto(ArchiveComment archiveComment) {

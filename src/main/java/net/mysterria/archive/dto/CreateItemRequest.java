@@ -14,10 +14,9 @@ public class CreateItemRequest {
     
     @Size(max = 2000, message = "Purpose cannot exceed 2000 characters")
     private String purpose;
-    
-    @NotNull(message = "Researcher ID cannot be null")
-    private Long researcherId;
-    
+
+    // Note: researcherId removed - determined by authenticated user
+
     private Long pathwayId;
     
     private Long typeId;

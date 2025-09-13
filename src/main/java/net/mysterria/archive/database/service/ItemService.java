@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,26 +24,32 @@ public class ItemService {
     
     private final ItemRepository itemRepository;
     private final ResearcherRepository researcherRepository;
+    private final ResearcherService researcherService;
     private final CommentRepository commentRepository;
     private final PathwayRepository pathwayRepository;
     private final TypeRepository typeRepository;
-    
+
     @Autowired
-    public ItemService(ItemRepository itemRepository, ResearcherRepository researcherRepository, 
-                      CommentRepository commentRepository, PathwayRepository pathwayRepository, 
-                      TypeRepository typeRepository) {
+    public ItemService(ItemRepository itemRepository, ResearcherRepository researcherRepository,
+                      ResearcherService researcherService, CommentRepository commentRepository,
+                      PathwayRepository pathwayRepository, TypeRepository typeRepository) {
         this.itemRepository = itemRepository;
         this.researcherRepository = researcherRepository;
+        this.researcherService = researcherService;
         this.commentRepository = commentRepository;
         this.pathwayRepository = pathwayRepository;
         this.typeRepository = typeRepository;
     }
     
-    public ItemDto createItem(CreateItemRequest request) {
+    public ItemDto createItem(CreateItemRequest request, UUID backendUserId) {
         validateItemRequest(request);
-        
-        ArchiveResearcher archiveResearcher = researcherRepository.findById(request.getResearcherId())
-                .orElseThrow(() -> new ResourceNotFoundException("Researcher not found with id: " + request.getResearcherId()));
+
+        // Find or create researcher linked to backend user
+        // We'll use a default nickname if not provided - this should come from JWT claims later
+        ArchiveResearcher archiveResearcher = researcherService.findOrCreateByBackendUserId(
+            backendUserId,
+            "User_" + backendUserId.toString().substring(0, 8) // Default nickname
+        );
         
         ArchivePathway archivePathway = null;
         if (request.getPathwayId() != null) {
@@ -100,11 +107,22 @@ public class ItemService {
                 .collect(Collectors.toList());
     }
     
-    public ItemDto updateItem(Long id, UpdateItemRequest request) {
+    public ItemDto updateItem(Long id, UpdateItemRequest request, UUID backendUserId) {
         validateUpdateRequest(request);
-        
+
         ArchiveItem archiveItem = itemRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Item not found with id: " + id));
+
+        // Verify the user owns this item (optional security check)
+        ArchiveResearcher userResearcher = researcherService.findOrCreateByBackendUserId(
+            backendUserId,
+            "User_" + backendUserId.toString().substring(0, 8)
+        );
+
+        // Optional: Check if user is the owner of the item (for additional security)
+        if (!archiveItem.getArchiveResearcher().getId().equals(userResearcher.getId())) {
+            throw new ValidationException("You can only edit your own items");
+        }
         
         if (request.getName() != null && !request.getName().trim().isEmpty()) {
             archiveItem.setName(request.getName());
@@ -166,9 +184,7 @@ public class ItemService {
         if (request.getName().length() < 2 || request.getName().length() > 100) {
             throw new ValidationException("Item name must be between 2 and 100 characters");
         }
-        if (request.getResearcherId() == null) {
-            throw new ValidationException("Researcher ID cannot be null");
-        }
+        // Note: researcherId is no longer required as it's determined by the authenticated user
     }
     
     private void validateUpdateRequest(UpdateItemRequest request) {
