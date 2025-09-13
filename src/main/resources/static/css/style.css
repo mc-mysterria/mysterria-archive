@@ -1,0 +1,114 @@
+body {
+    font-family: "Segoe UI", Roboto, Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9fafc;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    background: #fff;
+    padding: 30px 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+h1, h2, h3 {
+    margin-top: 0;
+    color: #222;
+}
+
+h1 {
+    font-size: 2rem;
+    border-bottom: 3px solid #007acc;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+h2 {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+h3 {
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: #555;
+}
+
+ul.developers {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+ul.developers li {
+    padding: 12px 15px;
+    margin-bottom: 10px;
+    background: #f0f7ff;
+    border-radius: 6px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+ul.developers li:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+ul.developers a {
+    color: #007acc;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1.1rem;
+}
+
+ul.developers a:hover {
+    text-decoration: underline;
+}
+
+.profile {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.profile .info {
+    flex: 1;
+}
+
+.profile h2 {
+    margin-bottom: 5px;
+}
+
+.profile p {
+    margin: 8px 0;
+    font-size: 1rem;
+}
+
+.github {
+    color: #24292e;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.github:hover {
+    color: #0366d6;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 20px;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+
+    ul.developers li {
+        padding: 10px;
+    }
+}
