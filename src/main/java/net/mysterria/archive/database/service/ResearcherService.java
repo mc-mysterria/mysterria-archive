@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -60,6 +62,21 @@ public class ResearcherService {
             throw new ResourceNotFoundException("Researcher not found with id: " + id);
         }
         researcherRepository.deleteById(id);
+    }
+
+    public ArchiveResearcher findOrCreateByBackendUserId(UUID backendUserId, String nickname) {
+        Optional<ArchiveResearcher> existing = researcherRepository.findByBackendUserId(backendUserId);
+
+        if (existing.isPresent()) {
+            return existing.get();
+        }
+
+        // Create new researcher linked to backend user
+        ArchiveResearcher newResearcher = new ArchiveResearcher();
+        newResearcher.setBackendUserId(backendUserId);
+        newResearcher.setNickname(nickname);
+
+        return researcherRepository.save(newResearcher);
     }
     
     private void validateNickname(String nickname) {

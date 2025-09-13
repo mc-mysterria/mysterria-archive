@@ -5,11 +5,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
 public interface ResearcherRepository extends JpaRepository<ArchiveResearcher, Long> {
 
     Optional<ArchiveResearcher> findByNickname(String nickname);
+
+    Optional<ArchiveResearcher> findByBackendUserId(UUID backendUserId);
 
     boolean existsByNickname(String nickname);
 

@@ -5,9 +5,12 @@ import net.mysterria.archive.dto.CreateItemRequest;
 import net.mysterria.archive.dto.ItemDto;
 import net.mysterria.archive.dto.UpdateItemRequest;
 import net.mysterria.archive.database.service.ItemService;
+import net.mysterria.archive.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,8 +27,11 @@ public class ItemController {
     }
     
     @PostMapping
-    public ResponseEntity<ItemDto> createItem(@Valid @RequestBody CreateItemRequest request) {
-        ItemDto item = itemService.createItem(request);
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:WRITE')")
+    public ResponseEntity<ItemDto> createItem(
+            @Valid @RequestBody CreateItemRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        ItemDto item = itemService.createItem(request, userPrincipal.getId());
         return new ResponseEntity<>(item, HttpStatus.CREATED);
     }
     
@@ -77,12 +83,17 @@ public class ItemController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<ItemDto> updateItem(@PathVariable Long id, @Valid @RequestBody UpdateItemRequest request) {
-        ItemDto item = itemService.updateItem(id, request);
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:WRITE')")
+    public ResponseEntity<ItemDto> updateItem(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateItemRequest request,
+            @AuthenticationPrincipal UserPrincipal userPrincipal) {
+        ItemDto item = itemService.updateItem(id, request, userPrincipal.getId());
         return ResponseEntity.ok(item);
     }
-    
+
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         itemService.deleteById(id);
         return ResponseEntity.noContent().build();
