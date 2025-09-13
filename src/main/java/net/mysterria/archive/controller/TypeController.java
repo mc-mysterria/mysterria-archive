@@ -14,32 +14,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/archive/types")
 public class TypeController {
-    
+
     private final TypeService typeService;
-    
+
     @Autowired
     public TypeController(TypeService typeService) {
         this.typeService = typeService;
     }
-    
+
     @PostMapping
     public ResponseEntity<TypeDto> createType(@Valid @RequestBody CreateTypeRequest request) {
         TypeDto type = typeService.createType(request);
         return new ResponseEntity<>(type, HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<TypeDto> getTypeById(@PathVariable Long id) {
         TypeDto type = typeService.findById(id);
         return ResponseEntity.ok(type);
     }
-    
+
     @GetMapping("/name/{name}")
     public ResponseEntity<TypeDto> getTypeByName(@PathVariable String name) {
         TypeDto type = typeService.findByName(name);
         return ResponseEntity.ok(type);
     }
-    
+
     @GetMapping
     public ResponseEntity<List<TypeDto>> getAllTypes(@RequestParam(required = false) String search) {
         List<TypeDto> types;
@@ -50,7 +50,7 @@ public class TypeController {
         }
         return ResponseEntity.ok(types);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteType(@PathVariable Long id) {
         typeService.deleteById(id);

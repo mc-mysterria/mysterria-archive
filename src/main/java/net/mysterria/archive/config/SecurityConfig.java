@@ -1,7 +1,7 @@
 package net.mysterria.archive.config;
 
-import net.mysterria.archive.security.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
+import net.mysterria.archive.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -30,7 +30,6 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        // Public endpoints - read-only access for everyone
                         .requestMatchers(HttpMethod.GET,
                                 "/archive/items/**",
                                 "/archive/pathways/**",
@@ -39,7 +38,6 @@ public class SecurityConfig {
                                 "/archive/comments/**"
                         ).permitAll()
 
-                        // Swagger/OpenAPI endpoints
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
@@ -47,7 +45,6 @@ public class SecurityConfig {
                                 "/actuator/health"
                         ).permitAll()
 
-                        // All write operations require authentication
                         .requestMatchers(HttpMethod.POST, "/archive/**").hasAuthority("PERM_ARCHIVE:WRITE")
                         .requestMatchers(HttpMethod.PUT, "/archive/**").hasAuthority("PERM_ARCHIVE:WRITE")
                         .requestMatchers(HttpMethod.DELETE, "/archive/**").hasAuthority("PERM_ARCHIVE:MODERATE")

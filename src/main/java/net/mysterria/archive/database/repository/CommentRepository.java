@@ -10,10 +10,10 @@ import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<ArchiveComment, Long> {
-    
+
     List<ArchiveComment> findByArchiveItemOrderByCreatedAtAsc(ArchiveItem archiveItem);
-    
+
     List<ArchiveComment> findByArchiveResearcher(ArchiveResearcher archiveResearcher);
-    
+
     List<ArchiveComment> findByArchiveItemAndArchiveResearcher(ArchiveItem archiveItem, ArchiveResearcher archiveResearcher);
 }

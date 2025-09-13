@@ -14,32 +14,32 @@ import java.util.List;
 @RestController
 @RequestMapping("/archive/pathways")
 public class PathwayController {
-    
+
     private final PathwayService pathwayService;
-    
+
     @Autowired
     public PathwayController(PathwayService pathwayService) {
         this.pathwayService = pathwayService;
     }
-    
+
     @PostMapping
     public ResponseEntity<PathwayDto> createPathway(@Valid @RequestBody CreatePathwayRequest request) {
         PathwayDto pathway = pathwayService.createPathway(request);
         return new ResponseEntity<>(pathway, HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/{id}")
     public ResponseEntity<PathwayDto> getPathwayById(@PathVariable Long id) {
         PathwayDto pathway = pathwayService.findById(id);
         return ResponseEntity.ok(pathway);
     }
-    
+
     @GetMapping("/name/{name}")
     public ResponseEntity<PathwayDto> getPathwayByName(@PathVariable String name) {
         PathwayDto pathway = pathwayService.findByName(name);
         return ResponseEntity.ok(pathway);
     }
-    
+
     @GetMapping
     public ResponseEntity<List<PathwayDto>> getAllPathways(@RequestParam(required = false) String search) {
         List<PathwayDto> pathways;
@@ -50,7 +50,7 @@ public class PathwayController {
         }
         return ResponseEntity.ok(pathways);
     }
-    
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deletePathway(@PathVariable Long id) {
         pathwayService.deleteById(id);

@@ -1,12 +1,12 @@
 package net.mysterria.archive.security;
 
-import net.mysterria.archive.config.JwtProperties;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.mysterria.archive.config.JwtProperties;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
@@ -29,7 +29,7 @@ public class JwtService {
 
     public List<String> extractPermissions(String token) {
         return extractClaim(token, claims ->
-            claims.get("permissions", List.class));
+                claims.get("permissions", List.class));
     }
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

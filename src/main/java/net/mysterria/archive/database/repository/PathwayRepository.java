@@ -11,10 +11,10 @@ import java.util.Optional;
 public interface PathwayRepository extends JpaRepository<ArchivePathway, Long> {
 
     Optional<ArchivePathway> findByName(String name);
-    
+
     List<ArchivePathway> findByNameContainingIgnoreCase(String name);
-    
+
     boolean existsByName(String name);
-    
+
     List<ArchivePathway> findBySequenceCountGreaterThanEqual(Integer sequenceCount);
 }

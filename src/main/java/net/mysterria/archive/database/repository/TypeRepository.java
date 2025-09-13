@@ -11,8 +11,8 @@ import java.util.Optional;
 public interface TypeRepository extends JpaRepository<ArchiveType, Long> {
 
     Optional<ArchiveType> findByName(String name);
-    
+
     List<ArchiveType> findByNameContainingIgnoreCase(String name);
-    
+
     boolean existsByName(String name);
 }

@@ -10,9 +10,7 @@ public class CreateCommentRequest {
     @NotBlank(message = "Comment content cannot be blank")
     @Size(max = 2000, message = "Comment content cannot exceed 2000 characters")
     private String content;
-    
+
     @NotNull(message = "Item ID cannot be null")
     private Long itemId;
-
-    // Note: researcherId removed - determined by authenticated user
 }
