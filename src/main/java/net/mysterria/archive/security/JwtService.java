@@ -42,7 +42,7 @@ public class JwtService {
             extractAllClaims(token);
             return !isTokenExpired(token);
         } catch (Exception e) {
-            log.error("Invalid JWT token: {}", e.getMessage());
+            log.error("Invalid JWT token: {}, JWT is this: {}", e.getMessage(), token);
             return false;
         }
     }
@@ -64,6 +64,7 @@ public class JwtService {
     }
 
     private Key getSignInKey() {
+        log.debug("Using JWT secret: {}", jwtProperties.getSecret());
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.getSecret());
         return Keys.hmacShaKeyFor(keyBytes);
     }
