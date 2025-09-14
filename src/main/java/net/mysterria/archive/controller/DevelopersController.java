@@ -17,7 +17,7 @@ public class DevelopersController {
 
     private static final List<ArchiveDeveloper> ARCHIVE_DEVELOPERS = List.of(
         new ArchiveDeveloper("ikeepcalm", "Bohdan Horokh", "Project Developer", "https://github.com/ikeepcalm"),
-        new ArchiveDeveloper("djecka", "Yevhen Svyacheniy", "Project Developer", "https://github.com/Djecka1337"),
+        new ArchiveDeveloper("djecka", "Yevhen Sviachenyi", "Project Developer", "https://github.com/Djecka-2019"),
         new ArchiveDeveloper("esfer", "Esfer Useinov", "Project Developer", "https://github.com/EsferUs7")
     );
 
