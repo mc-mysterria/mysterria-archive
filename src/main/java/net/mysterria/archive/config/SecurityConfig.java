@@ -36,9 +36,7 @@ public class SecurityConfig {
                                 "/archive/types/**",
                                 "/archive/researchers/**",
                                 "/archive/comments/**",
-                                "/archive/mvc/**",
-                                "/archive/mvc/",
-                                "/archive/mvc"
+                                "/archive/mvc/**"
                         ).permitAll()
 
                         .requestMatchers(
@@ -47,7 +45,8 @@ public class SecurityConfig {
                                 "/archive/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/archive/v3/api-docs/**",
-                                "/actuator/health"
+                                "/actuator/health",
+                                "/css/style.css"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/archive/**").hasAuthority("PERM_ARCHIVE:WRITE")
