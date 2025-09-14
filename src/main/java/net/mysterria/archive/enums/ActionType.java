@@ -1,0 +1,16 @@
+package net.mysterria.archive.enums;
+
+public enum ActionType {
+    CREATE_COMMENT,
+    EDIT_COMMENT,
+    DELETE_COMMENT,
+    CREATE_ITEM,
+    EDIT_ITEM,
+    DELETE_ITEM,
+    CREATE_PATHWAY,
+    EDIT_PATHWAY,
+    DELETE_PATHWAY,
+    CREATE_RESEARCHER,
+    EDIT_RESEARCHER,
+    DELETE_RESEARCHER,
+}
