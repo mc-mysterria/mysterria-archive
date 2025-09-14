@@ -46,8 +46,10 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/archive/v3/api-docs/**",
                                 "/actuator/health",
-                                "**/css/**",
-                                "**/favicon.ico"
+                                "/css/**",
+                                "/archive/css/**",
+                                "/favicon.ico",
+                                "/archive/favicon.ico"
                         ).permitAll()
 
                         .requestMatchers(HttpMethod.POST, "/archive/**").hasAuthority("PERM_ARCHIVE:WRITE")
