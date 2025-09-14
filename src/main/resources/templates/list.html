@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Mysterria Archive - Developers</title>
-    <link rel="stylesheet" th:href="@{~/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
@@ -11,7 +11,7 @@
 
     <ul class="developers">
         <li th:each="dev : ${developers}">
-            <a th:href="@{/archive/mvc/developers/{nick}(nick=${dev.nickname})}"
+            <a th:href="@{/mvc/developers/{nick}(nick=${dev.nickname})}"
             th:text="${dev.nickname}"
             class="dev-link"></a>
             -<span th:text="${dev.fullName}">Full Name</span>

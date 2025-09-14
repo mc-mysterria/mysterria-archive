@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/archive/actions")
+@RequestMapping("/actions")
 public class ActionController {
 
     private final ActionService actionService;

@@ -31,12 +31,12 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET,
-                                "/archive/items/**",
-                                "/archive/pathways/**",
-                                "/archive/types/**",
-                                "/archive/researchers/**",
-                                "/archive/comments/**",
-                                "/archive/mvc/**"
+                                "/items/**",
+                                "/pathways/**",
+                                "/types/**",
+                                "/researchers/**",
+                                "/comments/**",
+                                "/mvc/**"
                         ).permitAll()
 
                         .requestMatchers(
@@ -52,9 +52,9 @@ public class SecurityConfig {
                                 "/archive/favicon.ico"
                         ).permitAll()
 
-                        .requestMatchers(HttpMethod.POST, "/archive/**").hasAuthority("PERM_ARCHIVE:WRITE")
-                        .requestMatchers(HttpMethod.PUT, "/archive/**").hasAuthority("PERM_ARCHIVE:WRITE")
-                        .requestMatchers(HttpMethod.DELETE, "/archive/**").hasAuthority("PERM_ARCHIVE:MODERATE")
+                        .requestMatchers(HttpMethod.POST, "/**").hasAuthority("PERM_ARCHIVE:WRITE")
+                        .requestMatchers(HttpMethod.PUT, "/**").hasAuthority("PERM_ARCHIVE:WRITE")
+                        .requestMatchers(HttpMethod.DELETE, "/**").hasAuthority("PERM_ARCHIVE:MODERATE")
 
                         .anyRequest().authenticated()
                 )

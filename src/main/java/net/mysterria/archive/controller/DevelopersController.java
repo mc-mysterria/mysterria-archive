@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import net.mysterria.archive.database.entity.ArchiveDeveloper;
 
 @Controller
-@RequestMapping("/archive/mvc")
+@RequestMapping("/mvc")
 public class DevelopersController {
 
     private static final List<ArchiveDeveloper> ARCHIVE_DEVELOPERS = List.of(

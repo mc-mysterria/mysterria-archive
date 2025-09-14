@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/archive/items")
+@RequestMapping("/items")
 public class ItemController {
 
     private final ItemService itemService;

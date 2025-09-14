@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <title th:text="'Developer: ' + ${developer.nickname}">Developer</title>
-    <link rel="stylesheet" th:href="@{~/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
 <div class="container">
@@ -23,7 +23,7 @@
         </p>
 
         <p><strong>Role:</strong> <span th:text="${developer.role}">Project Developer</span></p>
-        <p><a th:href="@{/archive/mvc}">Back to list</a></p>
+        <p><a th:href="@{/mvc}">Back to list</a></p>
     </div>
 </div>
 </body>

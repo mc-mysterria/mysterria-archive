@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/archive/pathways")
+@RequestMapping("/pathways")
 public class PathwayController {
 
     private final PathwayService pathwayService;
