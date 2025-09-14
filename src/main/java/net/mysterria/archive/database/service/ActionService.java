@@ -197,4 +197,24 @@ public class ActionService {
 
         log.info("Deleted {} actions for researcher {}", actions.size(), researcher.getNickname());
     }
+
+    @Transactional(readOnly = true)
+    public List<ArchiveAction> getAllActions() {
+        log.debug("Fetching all actions");
+        return actionRepository.findAll();
+    }
+
+    @Transactional
+    public ArchiveAction updateAction(Long id, ActionType newActionType) {
+        log.debug("Updating action {} with new type {}", id, newActionType);
+
+        ArchiveAction action = actionRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Action not found with id: " + id));
+
+        action.setActionType(newActionType);
+        ArchiveAction savedAction = actionRepository.save(action);
+
+        log.info("Updated action {} with new type {}", id, newActionType);
+        return savedAction;
+    }
 }
