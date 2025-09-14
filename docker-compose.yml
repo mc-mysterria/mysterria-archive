@@ -44,12 +44,13 @@ services:
       mariadb:
         condition: service_healthy
     networks:
-      - mysterria-network
+      - gateway-network
 
 volumes:
   mariadb_data:
     driver: local
 
 networks:
-  mysterria-network:
-    driver: bridge
+  gateway-network:
+    external: true
+    name: mysterria-gateway_gateway-network
