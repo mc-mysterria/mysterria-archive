@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Mysterria Archive - Developers</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1>Developers</h1>
+
+    <ul class="developers">
+        <li th:each="dev : ${developers}">
+            <a th:href="@{/archive/mvc/developers/{nick}(nick=${dev.nickname})}"
+            th:text="${dev.nickname}"
+            class="dev-link"></a>
+            -<span th:text="${dev.fullName}">Full Name</span>
+        </li>
+    </ul>
+
+    <div th:switch="${count}">
+        <p th:case="0">No developers found.</p>
+        <p th:case="1">Only one developer is in the project.</p>
+        <p th:case="*">Total developers: <span th:text="${count}">N</span></p>
+    </div>
+</div>
+</body>
+</html>
