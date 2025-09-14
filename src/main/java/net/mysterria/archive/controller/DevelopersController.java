@@ -1,157 +1,44 @@
 package net.mysterria.archive.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import java.util.List;
+import java.util.Optional;
 
-@RestController
-@RequestMapping("/archive")
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+
+import net.mysterria.archive.database.entity.ArchiveDeveloper;
+
+@Controller
+@RequestMapping("/archive/mvc")
 public class DevelopersController {
 
-    @GetMapping("/")
-    @ResponseBody
-    public String helloWorld() {
-        return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Mysterria Archive - Developers</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
-                        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                        h1 { color: #333; border-bottom: 3px solid #007acc; padding-bottom: 10px; }
-                        ul { list-style: none; padding: 0; }
-                        li { margin: 15px 0; }
-                        a { color: #007acc; text-decoration: none; font-size: 1.2em; }
-                        a:hover { text-decoration: underline; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>Mysterria Archive Developers</h1>
-                        <ul>
-                            <li><a href="/archive/developers/ikeepcalm">ikeepcalm - Bohdan Horokh</a></li>
-                            <li><a href="/archive/developers/djecka">Djecka1337 - Yevhen Svyacheniy</a></li>
-                            <li><a href="/archive/developers/esfer">Esfer Useinov</a></li>
-                        </ul>
-                    </div>
-                </body>
-                </html>
-                """;
+    private static final List<ArchiveDeveloper> ARCHIVE_DEVELOPERS = List.of(
+        new ArchiveDeveloper("ikeepcalm", "Bohdan Horokh", "Project Developer", "https://github.com/ikeepcalm"),
+        new ArchiveDeveloper("djecka", "Yevhen Svyacheniy", "Project Developer", "https://github.com/Djecka1337"),
+        new ArchiveDeveloper("esfer", "Esfer Useinov", "Project Developer", "https://github.com/EsferUs7")
+    );
+
+    @GetMapping({"", "/"})
+    public String list(Model model) {
+        model.addAttribute("developers", ARCHIVE_DEVELOPERS);
+        model.addAttribute("count", ARCHIVE_DEVELOPERS.size());
+        return "list";
     }
 
-    @GetMapping("/developers/ikeepcalm")
-    @ResponseBody
-    public String ikeepcalmPage() {
-        return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>ikeepcalm - Bohdan Horokh</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
-                        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                        h1 { color: #333; border-bottom: 3px solid #007acc; padding-bottom: 10px; }
-                        .profile { display: flex; align-items: center; margin: 20px 0; }
-                        .info { margin-left: 20px; }
-                        .github { color: #007acc; text-decoration: none; }
-                        .github:hover { text-decoration: underline; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>Developer Profile</h1>
-                        <div class="profile">
-                            <div class="info">
-                                <h2>ikeepcalm</h2>
-                                <h3>Bohdan Horokh</h3>
-                                <p><strong>Role:</strong> Project Developer</p>
-                                <p><strong>GitHub:</strong> <a href="https://github.com/ikeepcalm" class="github">@ikeepcalm</a></p>
-                                <p><strong>Project:</strong> Mysterria Archive</p>
-                            </div>
-                        </div>
-                    </div>
-                </body>
-                </html>
-                """;
-    }
+    @GetMapping("/developers/{nickname}")
+    public String developerProfile(@PathVariable String nickname, Model model) {
+        Optional<ArchiveDeveloper> dev = ARCHIVE_DEVELOPERS.stream()
+                .filter(d -> d.nickname().equalsIgnoreCase(nickname))
+                .findFirst();
 
-    @GetMapping("/developers/djecka")
-    @ResponseBody
-    public String djecka1337Page() {
-        return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Djecka1337 - Yevhen Svyacheniy</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
-                        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                        h1 { color: #333; border-bottom: 3px solid #28a745; padding-bottom: 10px; }
-                        .profile { display: flex; align-items: center; margin: 20px 0; }
-                        .info { margin-left: 20px; }
-                        .github { color: #28a745; text-decoration: none; }
-                        .github:hover { text-decoration: underline; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>Developer Profile</h1>
-                        <div class="profile">
-                            <div class="info">
-                                <h2>Djecka1337</h2>
-                                <h3>Yevhen Svyacheniy</h3>
-                                <p><strong>Role:</strong> Project Developer</p>
-                                <p><strong>GitHub:</strong> <a href="https://github.com/Djecka1337" class="github">@Djecka1337</a></p>
-                                <p><strong>Project:</strong> Mysterria Archive</p>
-                            </div>
-                        </div>
-                    </div>
-                </body>
-                </html>
-                """;
-    }
+        if (dev.isEmpty()) {
+            return "redirect:/archive";
+        }
 
-    @GetMapping("/developers/esfer")
-    @ResponseBody
-    public String esferPage() {
-        return """
-                <!DOCTYPE html>
-                <html lang="en">
-                <head>
-                    <meta charset="UTF-8">
-                    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                    <title>Esfer Useinov</title>
-                    <style>
-                        body { font-family: Arial, sans-serif; margin: 40px; background-color: #f5f5f5; }
-                        .container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
-                        h1 { color: #333; border-bottom: 3px solid #dc3545; padding-bottom: 10px; }
-                        .profile { display: flex; align-items: center; margin: 20px 0; }
-                        .info { margin-left: 20px; }
-                        .github { color: #dc3545; text-decoration: none; }
-                        .github:hover { text-decoration: underline; }
-                    </style>
-                </head>
-                <body>
-                    <div class="container">
-                        <h1>Developer Profile</h1>
-                        <div class="profile">
-                            <div class="info">
-                                <h2>Esfer Useinov</h2>
-                                <p><strong>Role:</strong> Project Developer</p>
-                                <p><strong>Project:</strong> Mysterria Archive</p>
-                            </div>
-                        </div>
-                    </div>
-                </body>
-                </html>
-                """;
+        model.addAttribute("developer", dev.get());
+        return "developer";
     }
 }

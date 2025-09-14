@@ -36,9 +36,9 @@ public class SecurityConfig {
                                 "/archive/types/**",
                                 "/archive/researchers/**",
                                 "/archive/comments/**",
-                                "/archive/",
-                                "/archive/developers/**",
-                                "/archive/mvc/**"
+                                "/archive/mvc/**",
+                                "/archive/mvc/",
+                                "/archive/mvc"
                         ).permitAll()
 
                         .requestMatchers(
