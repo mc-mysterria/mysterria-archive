@@ -35,13 +35,18 @@ public class SecurityConfig {
                                 "/archive/pathways/**",
                                 "/archive/types/**",
                                 "/archive/researchers/**",
-                                "/archive/comments/**"
+                                "/archive/comments/**",
+                                "/archive/",
+                                "/archive/developers/**",
+                                "/archive/mvc/**"
                         ).permitAll()
 
                         .requestMatchers(
                                 "/swagger-ui/**",
                                 "/swagger-ui.html",
+                                "/archive/swagger-ui/**",
                                 "/v3/api-docs/**",
+                                "/archive/v3/api-docs/**",
                                 "/actuator/health"
                         ).permitAll()
 
