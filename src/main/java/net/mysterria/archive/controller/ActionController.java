@@ -9,7 +9,11 @@ import net.mysterria.archive.dto.CreateActionRequest;
 import net.mysterria.archive.dto.ResearcherDto;
 import net.mysterria.archive.dto.UpdateActionRequest;
 import net.mysterria.archive.enums.ActionType;
+import net.mysterria.archive.exception.model.ResourceNotFoundException;
+import net.mysterria.archive.exception.model.ValidationException;
 import net.mysterria.archive.security.UserPrincipal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -26,6 +30,7 @@ import java.util.stream.Collectors;
 @RequestMapping("/actions")
 public class ActionController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ActionController.class);
     private final ActionService actionService;
 
     @Autowired
@@ -47,7 +52,10 @@ public class ActionController {
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:READ')")
     public ResponseEntity<ActionDto> getActionById(@PathVariable Long id) {
         ArchiveAction action = actionService.getActionById(id)
-                .orElseThrow(() -> new RuntimeException("Action not found with id: " + id));
+                .orElseThrow(() -> {
+                    logger.warn("Action not found with id: {}", id);
+                    return new ResourceNotFoundException("Action not found with id: " + id);
+                });
         ActionDto actionDto = mapToDto(action);
         return ResponseEntity.ok(actionDto);
     }
@@ -74,8 +82,21 @@ public class ActionController {
 
     @GetMapping("/type/{actionType}")
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:READ')")
-    public ResponseEntity<List<ActionDto>> getActionsByType(@PathVariable ActionType actionType) {
-        List<ArchiveAction> actions = actionService.getActionsByType(actionType);
+    public ResponseEntity<List<ActionDto>> getActionsByType(@PathVariable String actionType) {
+        List<ArchiveAction> actions;
+
+        if ("all".equalsIgnoreCase(actionType)) {
+            actions = actionService.getAllActions();
+        } else {
+            try {
+                ActionType enumActionType = ActionType.valueOf(actionType.toUpperCase());
+                actions = actionService.getActionsByType(enumActionType);
+            } catch (IllegalArgumentException e) {
+                logger.warn("Invalid action type requested: {}", actionType);
+                throw new ValidationException("Invalid action type: " + actionType);
+            }
+        }
+
         List<ActionDto> actionDtos = actions.stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());
