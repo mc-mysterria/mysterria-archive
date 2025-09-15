@@ -1,6 +1,7 @@
 package net.mysterria.archive.controller;
 
 import jakarta.validation.Valid;
+import net.mysterria.archive.annotation.LogAction;
 import net.mysterria.archive.database.entity.ArchiveAction;
 import net.mysterria.archive.database.service.ActionService;
 import net.mysterria.archive.dto.ActionDto;
@@ -34,6 +35,7 @@ public class ActionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @LogAction(ActionType.CREATE_ACTION)
     public ResponseEntity<ActionDto> createAction(
             @Valid @RequestBody CreateActionRequest request) {
         ArchiveAction action = actionService.recordAction(request.getResearcherId(), request.getActionType());
@@ -104,6 +106,7 @@ public class ActionController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @LogAction(ActionType.EDIT_ACTION)
     public ResponseEntity<ActionDto> updateAction(
             @PathVariable Long id,
             @Valid @RequestBody UpdateActionRequest request) {
@@ -114,6 +117,7 @@ public class ActionController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
+    @LogAction(ActionType.DELETE_ACTION)
     public ResponseEntity<Void> deleteAction(@PathVariable Long id) {
         actionService.deleteAction(id);
         return ResponseEntity.noContent().build();

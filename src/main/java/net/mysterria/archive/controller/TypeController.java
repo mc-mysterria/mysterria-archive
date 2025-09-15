@@ -1,9 +1,11 @@
 package net.mysterria.archive.controller;
 
 import jakarta.validation.Valid;
+import net.mysterria.archive.annotation.LogAction;
 import net.mysterria.archive.database.service.TypeService;
 import net.mysterria.archive.dto.CreateTypeRequest;
 import net.mysterria.archive.dto.TypeDto;
+import net.mysterria.archive.enums.ActionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class TypeController {
     }
 
     @PostMapping
+    @LogAction(ActionType.CREATE_TYPE)
     public ResponseEntity<TypeDto> createType(@Valid @RequestBody CreateTypeRequest request) {
         TypeDto type = typeService.createType(request);
         return new ResponseEntity<>(type, HttpStatus.CREATED);
@@ -52,6 +55,7 @@ public class TypeController {
     }
 
     @DeleteMapping("/{id}")
+    @LogAction(ActionType.DELETE_TYPE)
     public ResponseEntity<Void> deleteType(@PathVariable Long id) {
         typeService.deleteById(id);
         return ResponseEntity.noContent().build();

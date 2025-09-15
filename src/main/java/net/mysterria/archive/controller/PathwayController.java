@@ -1,9 +1,11 @@
 package net.mysterria.archive.controller;
 
 import jakarta.validation.Valid;
+import net.mysterria.archive.annotation.LogAction;
 import net.mysterria.archive.database.service.PathwayService;
 import net.mysterria.archive.dto.CreatePathwayRequest;
 import net.mysterria.archive.dto.PathwayDto;
+import net.mysterria.archive.enums.ActionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class PathwayController {
     }
 
     @PostMapping
+    @LogAction(ActionType.CREATE_PATHWAY)
     public ResponseEntity<PathwayDto> createPathway(@Valid @RequestBody CreatePathwayRequest request) {
         PathwayDto pathway = pathwayService.createPathway(request);
         return new ResponseEntity<>(pathway, HttpStatus.CREATED);
@@ -52,6 +55,7 @@ public class PathwayController {
     }
 
     @DeleteMapping("/{id}")
+    @LogAction(ActionType.DELETE_PATHWAY)
     public ResponseEntity<Void> deletePathway(@PathVariable Long id) {
         pathwayService.deleteById(id);
         return ResponseEntity.noContent().build();

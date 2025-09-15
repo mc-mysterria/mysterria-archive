@@ -1,10 +1,12 @@
 package net.mysterria.archive.controller;
 
 import jakarta.validation.Valid;
+import net.mysterria.archive.annotation.LogAction;
 import net.mysterria.archive.database.service.ItemService;
 import net.mysterria.archive.dto.CreateItemRequest;
 import net.mysterria.archive.dto.ItemDto;
 import net.mysterria.archive.dto.UpdateItemRequest;
+import net.mysterria.archive.enums.ActionType;
 import net.mysterria.archive.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,7 @@ public class ItemController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:WRITE')")
+    @LogAction(ActionType.CREATE_ITEM)
     public ResponseEntity<ItemDto> createItem(
             @Valid @RequestBody CreateItemRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
@@ -84,6 +87,7 @@ public class ItemController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:WRITE')")
+    @LogAction(ActionType.EDIT_ITEM)
     public ResponseEntity<ItemDto> updateItem(
             @PathVariable Long id,
             @Valid @RequestBody UpdateItemRequest request,
@@ -94,6 +98,7 @@ public class ItemController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
+    @LogAction(ActionType.DELETE_ITEM)
     public ResponseEntity<Void> deleteItem(@PathVariable Long id) {
         itemService.deleteById(id);
         return ResponseEntity.noContent().build();
