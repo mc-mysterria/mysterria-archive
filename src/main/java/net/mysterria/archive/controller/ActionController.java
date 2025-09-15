@@ -33,7 +33,7 @@ public class ActionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
     public ResponseEntity<ActionDto> createAction(
             @Valid @RequestBody CreateActionRequest request) {
         ArchiveAction action = actionService.recordAction(request.getResearcherId(), request.getActionType());
@@ -103,7 +103,7 @@ public class ActionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
     public ResponseEntity<ActionDto> updateAction(
             @PathVariable Long id,
             @Valid @RequestBody UpdateActionRequest request) {
@@ -120,7 +120,7 @@ public class ActionController {
     }
 
     @DeleteMapping("/researcher/{researcherId}")
-    @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
     public ResponseEntity<Void> deleteActionsByResearcher(@PathVariable Long researcherId) {
         actionService.deleteActionsByResearcher(researcherId);
         return ResponseEntity.noContent().build();
