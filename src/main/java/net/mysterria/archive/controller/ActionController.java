@@ -34,7 +34,7 @@ public class ActionController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
     @LogAction(ActionType.CREATE_ACTION)
     public ResponseEntity<ActionDto> createAction(
             @Valid @RequestBody CreateActionRequest request) {
@@ -105,7 +105,7 @@ public class ActionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority('PERM_ARCHIVE:ADMIN')")
+    @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
     @LogAction(ActionType.EDIT_ACTION)
     public ResponseEntity<ActionDto> updateAction(
             @PathVariable Long id,
