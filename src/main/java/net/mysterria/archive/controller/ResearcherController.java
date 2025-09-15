@@ -1,9 +1,11 @@
 package net.mysterria.archive.controller;
 
 import jakarta.validation.Valid;
+import net.mysterria.archive.annotation.LogAction;
 import net.mysterria.archive.database.service.ResearcherService;
 import net.mysterria.archive.dto.CreateResearcherRequest;
 import net.mysterria.archive.dto.ResearcherDto;
+import net.mysterria.archive.enums.ActionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ public class ResearcherController {
     }
 
     @PostMapping
+    @LogAction(ActionType.CREATE_RESEARCHER)
     public ResponseEntity<ResearcherDto> createResearcher(@Valid @RequestBody CreateResearcherRequest request) {
         ResearcherDto researcher = researcherService.createResearcher(request);
         return new ResponseEntity<>(researcher, HttpStatus.CREATED);
@@ -47,6 +50,7 @@ public class ResearcherController {
     }
 
     @DeleteMapping("/{id}")
+    @LogAction(ActionType.DELETE_RESEARCHER)
     public ResponseEntity<Void> deleteResearcher(@PathVariable Long id) {
         researcherService.deleteById(id);
         return ResponseEntity.noContent().build();

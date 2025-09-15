@@ -1,9 +1,11 @@
 package net.mysterria.archive.controller;
 
 import jakarta.validation.Valid;
+import net.mysterria.archive.annotation.LogAction;
 import net.mysterria.archive.database.service.CommentService;
 import net.mysterria.archive.dto.CommentDto;
 import net.mysterria.archive.dto.CreateCommentRequest;
+import net.mysterria.archive.enums.ActionType;
 import net.mysterria.archive.security.UserPrincipal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,6 +29,7 @@ public class CommentController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:WRITE')")
+    @LogAction(ActionType.CREATE_COMMENT)
     public ResponseEntity<CommentDto> createComment(
             @Valid @RequestBody CreateCommentRequest request,
             @AuthenticationPrincipal UserPrincipal userPrincipal) {
@@ -54,6 +57,7 @@ public class CommentController {
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAuthority('PERM_ARCHIVE:MODERATE')")
+    @LogAction(ActionType.DELETE_COMMENT)
     public ResponseEntity<Void> deleteComment(@PathVariable Long id) {
         commentService.deleteById(id);
         return ResponseEntity.noContent().build();
